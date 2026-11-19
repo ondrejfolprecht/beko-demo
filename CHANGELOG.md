@@ -14,9 +14,17 @@ Tento soubor je společný pracovní záznam pro Codex a Claude Code. Zachycuje 
 - **Fáze** — Fáze 1 je ve stavu `review`. Landing je rozdělená na deset částí podle [dokumentu s textacemi](beko-redesign-scope/BEKO_Landing_page_texty.docx), Části 07 až 10 jsou implementované, landing je uzavřená. Formulář a mapa poboček čekají na stránku Kontakt. Přehled je v [LANDING-PARTS.md](beko-redesign-scope/docs/LANDING-PARTS.md). Náhled běží na `http://localhost:3000/`.
 - **Podklady** — aktuální [redesign scope](beko-redesign-scope/START-HERE.md) určuje 25 stránek v šesti fázích a nahrazuje původní plán 22 stránek. Stav a předání jsou v [PROGRESS.md](beko-redesign-scope/PROGRESS.md), návrhové volby v [DECISIONS.md](beko-redesign-scope/docs/DECISIONS.md). Původní audit a uživatelské reference zůstávají zachované.
 - **Další krok** — posouzení celé landing page včetně výraznějších scroll efektů a revize navigace/patičky z 10. 11. uživatelem. Fázi 2 zahájit až po výslovném schválení.
-- **Blokátory** — nasazení na Vercel čeká na přihlášení uživatele; web je nahraný na GitHubu.
+- **Publikace** — živé demo: https://beko-demo.vercel.app/; GitHub: https://github.com/ondrejfolprecht/beko-demo. Vercel projekt `beko-demo`, větev `main`, Root Directory `web`.
+- **Blokátory** — žádné pro zveřejněné demo. Místní Git autentizace a sjednocení lokální historie s origin zůstávají k dořešení.
 
 ## Zápisy
+
+### 2026-11-19 — Živé demo na Vercelu (Codex)
+
+- **Změna** — projekt `beko-demo` importovaný z GitHubu do týmu `ondrej4`, preset Next.js, Root Directory `web`, produkční větev `main`.
+- **Výsledek** — https://beko-demo.vercel.app/, deployment `dpl_DMsiUuq3KYVUDBgsxAevL87PB6AV`.
+- **Ověření** — Vercel oznámil Deployed to Production; veřejná stránka se načetla s obsahem landing page. Snímek `web/docs/qa/deployment/vercel-live.png`.
+- **Předání** — odkaz připravený ke sdílení.
 
 ### 2026-11-19 — Příprava publikace na GitHub a Vercel (Codex)
 

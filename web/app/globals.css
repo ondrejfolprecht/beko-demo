@@ -1,0 +1,739 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./fonts.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Arial, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-display: "Michroma", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-popover: var(--background);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--blue);
+  --color-primary-foreground: #fff;
+  --color-secondary: var(--mist);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--mist);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--mist);
+  --color-accent-foreground: var(--foreground);
+  --color-destructive: #cb2634;
+  --color-border: var(--line);
+  --color-input: #8d95a5;
+  --color-ring: var(--blue);
+
+  --color-ink: var(--foreground);
+  --color-surface: var(--surface);
+  --color-danger: var(--danger);
+  --color-scrim: var(--scrim);
+  --color-mist: var(--mist);
+  --color-line: var(--line);
+  --color-blue: var(--blue);
+  --color-blue-text: var(--blue-text);
+  --color-blue-deep: var(--blue-deep);
+  --color-sky: var(--sky);
+  --color-yellow: var(--yellow);
+  --color-red: var(--red);
+  --color-lime: var(--lime);
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-4xl: 0;
+
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root {
+  --background: #fff;
+  /* Ink carries a little of the brand navy, so text and the cool surfaces belong to one family. */
+  --foreground: #0e1524;
+  --muted-foreground: #565e6e;
+  --mist: #f1f4fa;
+  --line: #dde1e9;
+  /* Cards and form fields, and the text colour of form errors. */
+  --surface: #fff;
+  --danger: #b42b37;
+  /* Fixed dark shade for overlays and photo gradients, the same in both themes. */
+  --scrim: #080c16;
+
+  /* Palette taken from the Elementor kit of beko-engineering.cz (light and dark theme). */
+  --blue: #155df5;
+  --blue-text: #155df5;
+  --blue-deep: #0f46c2;
+  --sky: #56b5f9;
+  --yellow: #f8d347;
+  --red: #dd4754;
+  --lime: #9dc53d;
+  /* Deeper tones of sky, yellow and lime for text on light backgrounds, where the brand tones are too pale to read. */
+  --sky-text: #0f78c8;
+  --yellow-text: #997700;
+  --lime-text: #55800f;
+
+  --gutter: 16px;
+  --header: 64px;
+  --tile: 32px;
+  --section: 72px;
+
+  @media (min-width: 400px) { --gutter: 20px; }
+  @media (min-width: 768px) { --gutter: 32px; --tile: 40px; --section: 96px; }
+  @media (min-width: 1200px) { --gutter: 48px; --header: 72px; --tile: 56px; --section: 136px; }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header) + 24px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  button { cursor: pointer; }
+
+  :where(a, button, [role="switch"], [role="tab"]):focus-visible {
+    outline: 2px solid var(--blue-text);
+    outline-offset: 3px;
+  }
+
+  ::selection { background: var(--yellow); color: #0e1524; }
+  /* Small system details in brand colours: text cursor, native controls and the page scrollbar. */
+  html {
+    accent-color: var(--blue);
+    caret-color: var(--blue-text);
+    scrollbar-color: color-mix(in oklab, var(--foreground) 28%, transparent) transparent;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
+  .maplibregl-ctrl-attrib {
+    @apply bg-background! text-muted-foreground! border-border! rounded-md! border! shadow-sm!;
+  }
+  .maplibregl-ctrl-attrib a {
+    @apply text-muted-foreground!;
+  }
+  .maplibregl-ctrl-attrib a:hover {
+    @apply text-foreground!;
+  }
+  .maplibregl-ctrl-attrib-button {
+    @apply bg-transparent! dark:invert;
+  }
+}
+
+@utility wrap {
+  width: min(100% - 2 * var(--gutter), 1344px);
+  margin-inline: auto;
+}
+
+@utility section-y {
+  padding-block: var(--section);
+}
+
+@utility display-hero {
+  font-family: var(--font-display);
+  /* The second line is the longest, and this size keeps it on one line down to narrow phones. */
+  font-size: min(6.7vw, 3.375rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+
+  /* A phone held sideways has little height, so the headline must stay clear of the car. */
+  @media (max-width: 1023px) and (min-aspect-ratio: 1/1) { font-size: 2.5rem; }
+  @media (min-width: 1024px) { font-size: min(4.8vw, 4.5rem); }
+}
+
+@utility display-section {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 6.4vw, 4rem);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+@utility display-figure {
+  font-family: var(--font-display);
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+}
+
+/* Per-word and per-letter headline reveal. The extra block padding keeps Czech carons inside the mask. */
+.split-mask {
+  display: inline-block;
+  overflow: clip;
+  padding-block: 0.24em 0.08em;
+  margin-block: -0.24em -0.08em;
+  vertical-align: top;
+}
+
+.split-glyph {
+  display: inline-block;
+  transform: translateY(112%);
+  transition: transform 1000ms var(--ease-brand);
+  transition-delay: calc(var(--i) * var(--split-step, 30ms) + var(--split-delay, 0ms));
+  will-change: transform;
+}
+
+[data-in] .split-glyph { transform: none; }
+
+/* Above the fold the reveal runs from CSS alone, so it does not wait for hydration. */
+[data-auto] .split-glyph {
+  animation: glyph-rise 1000ms var(--ease-brand) both;
+  animation-delay: calc(var(--i) * var(--split-step, 30ms) + var(--split-delay, 0ms));
+  transition: none;
+}
+
+/* Blue gradient text from the Sentry reference, used on a single phrase at a time. */
+.ink-gradient {
+  background: linear-gradient(90deg, var(--blue) 0%, #2f83f7 55%, var(--sky) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Mosaic reveal derived from the BEKO logo: tiles switch off one by one in hard steps. */
+.tiles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  overflow: hidden;
+  align-content: start;
+  pointer-events: none;
+}
+
+/* The negative margin closes hairline seams between tiles of fractional size. */
+.tiles > span {
+  aspect-ratio: 1;
+  margin: -1px;
+  transition: opacity 1ms linear var(--d);
+}
+
+.tiles[data-in] > span { opacity: 0; }
+.tiles[data-auto] > span { animation: tile-off 1ms linear var(--d) forwards; }
+
+/* Text roll on hover used by navigation and footer links. */
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: clip;
+  vertical-align: top;
+}
+
+.roll > span {
+  display: block;
+  transition: transform 380ms var(--ease-brand);
+}
+
+.roll::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: nowrap;
+  transition: transform 380ms var(--ease-brand);
+}
+
+@media (hover: hover) {
+  :is(a, button):hover > .roll > span,
+  :is(a, button):hover > .roll::after { transform: translateY(-100%); }
+}
+
+/* Image change without fade: the next image wipes over the current one. */
+.image-stack > * {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0s linear 800ms;
+}
+
+.image-stack > [data-active] {
+  z-index: 1;
+  clip-path: inset(0);
+  transition: clip-path 800ms var(--ease-brand);
+}
+
+/* Light field mixed from the BEKO palette. Only transform moves, so it stays on the compositor. */
+.aurora {
+  position: absolute;
+  inset: -12% -8% 0;
+  z-index: -2;
+  background:
+    radial-gradient(42% 52% at 82% 18%, rgb(86 181 249 / 0.5), transparent 72%),
+    radial-gradient(38% 48% at 100% 62%, rgb(21 93 245 / 0.24), transparent 72%),
+    radial-gradient(36% 40% at 50% 4%, rgb(248 211 71 / 0.3), transparent 72%),
+    radial-gradient(34% 42% at 8% 14%, rgb(157 197 61 / 0.24), transparent 72%),
+    radial-gradient(30% 34% at 66% 82%, rgb(221 71 84 / 0.13), transparent 72%);
+  animation: aurora 26s ease-in-out infinite alternate;
+  mask-image: linear-gradient(180deg, #000 62%, transparent);
+}
+
+.aurora-end {
+  inset: 0 -8%;
+  mask-image: linear-gradient(0deg, #000 55%, transparent);
+}
+
+@keyframes aurora {
+  to { transform: translate3d(-4%, 3%, 0) scale(1.08); }
+}
+
+/* Header, hero and the mobile menu set their own text colour, so they also follow the theme inside portals. */
+[data-theme-scope] { color: var(--foreground); }
+
+/* Dark theme for the whole site. The toggle sets the class on <html>, the inline script in the layout restores it. */
+.dark {
+  color-scheme: dark;
+  --surface: #0d1422;
+  --danger: #ff8a93;
+  --sky-text: var(--sky);
+  --yellow-text: var(--yellow);
+  --lime-text: var(--lime);
+  /* Near-black with a navy cast, close to the night photo in the hero. */
+  --background: #080c16;
+  --foreground: #f3f6fb;
+  --muted-foreground: #aeb9cd;
+  --mist: #141d30;
+  --line: rgb(255 255 255 / 0.16);
+  --input: rgb(255 255 255 / 0.4);
+}
+
+/* Hero photo: day and night share one composition, so switching themes reads as night falling. */
+.hero-scene {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.hero-scene-day { background: #61b8dd; }
+.hero-scene-night { background: #00091a; opacity: 0; transition: opacity 900ms ease; }
+.dark .hero-scene-night { opacity: 1; }
+
+/* Portrait: the photo leaves water under the car for the logos and its sky fades into a solid colour above. */
+.hero-scene img {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  mask-image: linear-gradient(180deg, transparent, #000 14%);
+  animation: hero-settle 2400ms var(--ease-brand) both;
+  transform-origin: 60% 80%;
+}
+
+.hero-copy { padding-bottom: 76vw; }
+
+/* Keeps the white logos readable on the lighter water of the day photo. */
+.hero-logo-scrim {
+  position: absolute;
+  inset: auto 0 0;
+  height: 11rem;
+  background: linear-gradient(0deg, rgb(4 14 28 / 0.62), rgb(4 14 28 / 0.34) 48%, transparent);
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .hero-scene img {
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: 65% 72%;
+    mask-image: none;
+  }
+
+  .hero-copy { padding-bottom: 8.5rem; }
+}
+
+/* A phone held sideways has little height, so the copy moves up and the lead runs wider to clear the car. */
+@media (max-width: 1023px) and (min-aspect-ratio: 1/1) {
+  .hero-copy { padding-top: 1.5rem; }
+  .hero-lead { max-width: 42rem; }
+}
+
+/* A low laptop window has less room above the second car, so the copy tightens up. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .hero-lead { margin-top: 1.5rem; }
+  .hero-actions { margin-top: 1.5rem; }
+}
+
+/* Top-level menu item: label and chevron take its BEKO colour on hover and while the panel is open. */
+.nav-tile {
+  background: none;
+  transition: color 200ms var(--ease-brand);
+}
+.nav-tile[data-state="open"] { color: var(--nav-accent); }
+
+@media (hover: hover) {
+  .nav-tile:hover { color: var(--nav-accent); }
+}
+
+@keyframes hero-settle {
+  from { transform: scale(1.05); }
+  to { transform: none; }
+}
+
+.client-logo {
+  --logo-scale: 1;
+  width: calc(var(--logo-width) * var(--logo-scale) * 1px);
+  height: calc(var(--logo-height) * var(--logo-scale) * 1px);
+}
+
+@media (min-width: 1024px) {
+  .client-logo { --logo-scale: 0.86; }
+}
+
+/* Hero sketch: pencil strokes draw once, then the same drawing cycles through 3D model and analysis. */
+.sketch-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: sketch-draw var(--length, 1s) cubic-bezier(0.45, 0.05, 0.4, 1) var(--start, 0s) forwards;
+}
+
+@keyframes sketch-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.sketch-mesh { animation: sketch-mesh 18s linear infinite; }
+.sketch-heat { animation: sketch-heat 18s linear infinite; fill-opacity: 0.8; }
+.sketch-comb { animation: sketch-comb 18s linear infinite; }
+.sketch-scan { animation: sketch-scan 18s linear infinite; }
+
+@keyframes sketch-mesh {
+  0%, 36% { clip-path: inset(0 100% 0 0); opacity: 1; }
+  44%, 92% { clip-path: inset(0 0 0 0); opacity: 1; }
+  98%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
+}
+
+@keyframes sketch-heat {
+  0%, 62% { clip-path: inset(0 100% 0 0); opacity: 1; }
+  70%, 92% { clip-path: inset(0 0 0 0); opacity: 1; }
+  98%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
+}
+
+@keyframes sketch-comb {
+  0%, 44% { opacity: 0; }
+  50%, 62% { opacity: 1; }
+  68%, 100% { opacity: 0; }
+}
+
+/* A thin scanner leads each wipe. Positions match the 36-44 % and 62-70 % reveals. */
+@keyframes sketch-scan {
+  0%, 36% { transform: translateX(0); opacity: 0; }
+  37% { opacity: 1; }
+  44% { transform: translateX(960px); opacity: 1; }
+  44.5%, 62% { transform: translateX(0); opacity: 0; }
+  63% { opacity: 1; }
+  70% { transform: translateX(960px); opacity: 1; }
+  70.5%, 100% { transform: translateX(960px); opacity: 0; }
+}
+
+.sketch-note { opacity: 0; animation: note-in 700ms ease 5.2s forwards; }
+
+@keyframes note-in {
+  to { opacity: 1; }
+}
+
+.sketch-chip[data-stage="0"] { animation: chip-sketch 18s linear infinite; }
+.sketch-chip[data-stage="1"] { animation: chip-model 18s linear infinite; }
+.sketch-chip[data-stage="2"] { animation: chip-analysis 18s linear infinite; }
+
+@keyframes chip-sketch {
+  0%, 36% { background: var(--blue); border-color: var(--blue); color: #fff; }
+  38%, 96% { background: rgb(255 255 255 / 0.6); border-color: rgb(21 93 245 / 0.25); color: var(--foreground); }
+  100% { background: var(--blue); border-color: var(--blue); color: #fff; }
+}
+
+@keyframes chip-model {
+  0%, 36%, 64%, 100% { background: rgb(255 255 255 / 0.6); border-color: rgb(21 93 245 / 0.25); color: var(--foreground); }
+  38%, 62% { background: var(--blue); border-color: var(--blue); color: #fff; }
+}
+
+@keyframes chip-analysis {
+  0%, 62%, 98%, 100% { background: rgb(255 255 255 / 0.6); border-color: rgb(21 93 245 / 0.25); color: var(--foreground); }
+  64%, 96% { background: var(--blue); border-color: var(--blue); color: #fff; }
+}
+
+/* Client marquee in two directions. The second copy of each list is decorative. */
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 88%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 64s linear infinite;
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Part 04 backdrop: a faint drafting grid that fades out towards the edges. */
+.blueprint {
+  background-image:
+    linear-gradient(to right, rgb(21 93 245 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(21 93 245 / 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: center;
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, #000 40%, transparent 100%);
+}
+
+/* Oversized claim between parts 06 and 07: one solid line and one drawn only in outline. */
+.claim-band {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 11vw, 11rem);
+  line-height: 1.3;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.claim-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--blue);
+}
+
+/* Pointer spotlight on the service cards. Position comes from SpotlightGroup. */
+.spotlight-card { position: relative; isolation: isolate; }
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), var(--spot, rgb(21 93 245 / 0.14)), transparent 70%);
+  transition: opacity 300ms;
+}
+
+.spotlight-card:hover::before { opacity: 1; }
+
+/* Isometric service visuals. */
+.iso-layer {
+  transition: transform 700ms var(--ease-brand);
+  transform: translateY(calc(var(--layer, 0) * 1px));
+}
+
+.spotlight-card:hover .iso-layer { transform: translateY(calc(var(--layer, 0) * var(--spread, 1.6px))); }
+
+.dash-run {
+  stroke-dasharray: 10 90;
+  animation: dash-run 3.2s linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes dash-run {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+.twinkle {
+  animation: twinkle 3.6s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* Sequential highlight of nodes in the case study diagram. */
+.flow-node { animation: flow-node var(--cycle, 7.5s) linear infinite; animation-delay: var(--delay, 0s); }
+
+@keyframes flow-node {
+  0%, 22%, 100% { background: rgb(255 255 255 / 0.14); border-color: rgb(255 255 255 / 0.35); color: #fff; }
+  4%, 14% { background: #fff; border-color: #fff; color: var(--blue); }
+}
+
+@keyframes glyph-rise {
+  from { transform: translateY(112%); }
+  to { transform: none; }
+}
+
+@keyframes tile-off {
+  to { opacity: 0; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes tile-pop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.rise-in { animation: rise-in 900ms var(--ease-brand) both; animation-delay: var(--delay, 0ms); }
+.tile-pop { animation: tile-pop 500ms var(--ease-brand) both; animation-delay: var(--delay, 0ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .tiles { display: none; }
+  .split-glyph { transform: none; }
+  .marquee { overflow-x: auto; scrollbar-width: none; }
+  .marquee-track { animation: none; }
+  .marquee-track > [aria-hidden] { display: none; }
+  .flow-node, .twinkle, .dash-run, .aurora { animation: none; }
+  .sketch-stroke { stroke-dashoffset: 0; animation: none; }
+  .sketch-note { opacity: 1; animation: none; }
+  .sketch-mesh, .sketch-chip[data-stage] { animation: none; }
+  .sketch-heat, .sketch-comb, .sketch-scan { display: none; }
+  .sketch-chip[data-stage="1"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+}
+/* Service feedback follows the link, including keyboard focus. */
+/* Newsletter panel inside the blog: a light wash from sky to blue sets it apart from the articles. */
+.newsletter-panel {
+  background: linear-gradient(120deg, color-mix(in oklab, var(--sky) 30%, var(--background)), color-mix(in oklab, var(--blue) 14%, var(--background)) 75%);
+}
+.dark .newsletter-panel {
+  background: linear-gradient(120deg, color-mix(in oklab, var(--sky) 16%, var(--background)), color-mix(in oklab, var(--blue) 22%, var(--background)) 75%);
+}
+
+/* Closing contact band: brand blue deepening towards one corner instead of a single flat field. */
+.contact-band {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue) 35%, var(--blue-deep) 100%);
+}
+
+.service-card { transition: background-color 180ms ease; }
+.service-card:hover, .service-card:focus-within { background: var(--mist); }
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
+
+/* Text and focus accents are lighter than solid brand fills in the dark theme. */
+.dark { --blue-text: #85adff; }
+
+/* One-time entrances, only for selected visual groups. Never hide server-rendered content. */
+@keyframes entrance-item {
+  from { opacity: 0; transform: translateY(48px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes entrance-media {
+  from { opacity: 0; transform: translateY(40px); clip-path: inset(12% 0 0); }
+  to { opacity: 1; transform: none; clip-path: inset(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-entrance][data-entered="true"] {
+    animation: entrance-item 1000ms var(--ease-brand) both;
+    animation-delay: calc(var(--entrance-order, 0) * 110ms);
+  }
+  [data-entrance="media"][data-entered="true"] { animation-name: entrance-media; animation-duration: 1200ms; }
+  [data-entrance="service"][data-entered="true"] { animation-delay: 0ms; }
+  @media (min-width: 640px) {
+    [data-entrance="service"][data-entered="true"] { animation-delay: calc(mod(var(--entrance-order), 2) * 110ms); }
+  }
+  @media (min-width: 1024px) {
+    [data-entrance="service"][data-entered="true"] { animation-delay: calc(mod(var(--entrance-order), 3) * 110ms); }
+  }
+  [data-entrance][data-waiting="true"] { opacity: 0; }
+  [data-entrance]:focus-within { animation: none; opacity: 1; }
+}
+
+/* Scroll scenes are static for reduced motion and remain usable while focused. */
+[data-scroll-scene="film"]:focus-within > .scroll-scene-inner { transform: none !important; }
+@media (max-width: 639px) {
+  [data-scroll-scene="hero"] > .scroll-scene-inner { transform: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-scene-inner { transform: none !important; }
+  [data-entrance] { opacity: 1 !important; animation: none !important; }
+}
+.site-footer a:hover > svg, .site-footer a:focus-visible > svg { transform: translate(2px, -2px); }
+.site-footer a > svg { transition: transform 220ms var(--ease-brand); }
+
+/* Split-button arrow: the first arrow leaves in its own direction, the second follows it in from behind. */
+.button-arrow > svg { grid-area: 1 / 1; transition: transform 360ms var(--ease-brand); }
+.button-arrow[data-direction="forward"] > svg:last-child { transform: translateX(-250%); }
+.button-arrow[data-direction="diagonal"] > svg:last-child { transform: translate(-250%, 250%); }
+:is(a, button):is(:hover, :focus-visible) > .button-arrow[data-direction="forward"] > svg:first-child { transform: translateX(250%); }
+:is(a, button):is(:hover, :focus-visible) > .button-arrow[data-direction="diagonal"] > svg:first-child { transform: translate(250%, -250%); }
+:is(a, button):is(:hover, :focus-visible) > .button-arrow > svg:last-child { transform: none; }
+
+/* Project tag: a second line slides out under the label when the card is hovered or focused. */
+.tag-detail { display: grid; grid-column: 2; grid-template-rows: 0fr; transition: grid-template-rows 320ms var(--ease-brand); }
+.tag-detail > span { min-height: 0; overflow: hidden; }
+a:is(:hover, :focus-visible) .tag-detail { grid-template-rows: 1fr; }
+
+/* The last digit of a figure rolls into place once. Without motion, or before it is seen, the final digit just stands. */
+.figure-roll { display: inline-block; height: 1.1em; overflow: hidden; vertical-align: bottom; }
+.figure-roll-strip { display: flex; flex-direction: column; transform: translateY(-80%); }
+.figure-roll-strip > span { display: block; height: 1.1em; }
+@keyframes figure-roll { from { transform: translateY(0); } to { transform: translateY(-80%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .figure-roll[data-rolling] > .figure-roll-strip { animation: figure-roll 1100ms var(--ease-brand) 120ms backwards; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button-arrow > svg, .tag-detail { transition: none; }
+}
+
+/* BE-Assist: the window rises from its button, the waiting dots pulse in the logo colours. */
+@keyframes assistant-in { from { opacity: 0; transform: translateY(12px); } }
+/* The eyes glance to one side and the other, rest, and blink. One loop, so the moves never collide. */
+@keyframes assistant-eyes {
+  0%, 16%, 60%, 100% { transform: none; }
+  22%, 34% { transform: translateX(-2px); }
+  40%, 52% { transform: translateX(2px); }
+  78%, 82% { transform: none; }
+  80% { transform: scaleY(0.1); }
+  90%, 94% { transform: none; }
+  92% { transform: scaleY(0.1); }
+}
+/* The speech bubble pops out of the head's corner for a moment in every loop, its dots pulse one after another. */
+@keyframes assistant-bubble {
+  0%, 58%, 100% { opacity: 0; transform: scale(0.2); }
+  63% { opacity: 1; transform: scale(1.12); }
+  66%, 92% { opacity: 1; transform: scale(1); }
+  96% { opacity: 0; transform: scale(0.2); }
+}
+@keyframes assistant-bubble-dot { 0%, 60%, 100% { opacity: 0.45; } 30% { opacity: 1; } }
+@keyframes assistant-dot { 0%, 60%, 100% { opacity: 0.35; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .assistant-panel { animation: assistant-in 260ms var(--ease-brand); }
+  .assistant-dot { animation: assistant-dot 900ms ease-in-out infinite; }
+  .assistant-eyes { transform-box: fill-box; transform-origin: center; animation: assistant-eyes 7s ease-in-out infinite; }
+  .assistant-bubble { transform-box: fill-box; transform-origin: 0% 100%; animation: assistant-bubble 11s var(--ease-brand) 3s infinite backwards; }
+  .assistant-bubble-dot { animation: assistant-bubble-dot 1s ease-in-out infinite; }
+  .assistant-bubble-dot:nth-of-type(2) { animation-delay: 160ms; }
+  .assistant-bubble-dot:nth-of-type(3) { animation-delay: 320ms; }
+}
+
+/* BE-Assist waits below the edge until the first scroll, then rises into its corner. */
+.assistant-root { opacity: 0; transform: translateY(24px); transition: opacity 500ms var(--ease-brand), transform 700ms var(--ease-brand); }
+.assistant-root[data-shown] { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .assistant-root { transform: none; transition: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assistant-bubble { display: none; }
+}

@@ -14,7 +14,7 @@ Tento soubor je společný pracovní záznam pro Codex a Claude Code. Zachycuje 
 - **Fáze** — Fáze 1 je ve stavu `review`. Landing je rozdělená na deset částí podle [dokumentu s textacemi](beko-redesign-scope/BEKO_Landing_page_texty.docx), Části 07 až 10 jsou implementované, landing je uzavřená. Formulář a mapa poboček čekají na stránku Kontakt. Přehled je v [LANDING-PARTS.md](beko-redesign-scope/docs/LANDING-PARTS.md). Náhled běží na `http://localhost:3000/`.
 - **Podklady** — aktuální [redesign scope](beko-redesign-scope/START-HERE.md) určuje 25 stránek v šesti fázích a nahrazuje původní plán 22 stránek. Stav a předání jsou v [PROGRESS.md](beko-redesign-scope/PROGRESS.md), návrhové volby v [DECISIONS.md](beko-redesign-scope/docs/DECISIONS.md). Původní audit a uživatelské reference zůstávají zachované.
 - **Další krok** — posouzení celé landing page včetně výraznějších scroll efektů a revize navigace/patičky z 10. 11. uživatelem. Fázi 2 zahájit až po výslovném schválení.
-- **Blokátory** — žádné evidované.
+- **Blokátory** — nasazení na Vercel čeká na přihlášení uživatele; web je nahraný na GitHubu.
 
 ## Zápisy
 
@@ -23,7 +23,7 @@ Tento soubor je společný pracovní záznam pro Codex a Claude Code. Zachycuje 
 - **Pokyn uživatele** — nahrát aktuální demo do `ondrejfolprecht/beko-demo` a připravit živý náhled na Vercelu.
 - **Rozsah** — aplikace `web/`, veřejné assety a projektová dokumentace; bez závislostí, buildů a lokálních screenshotů. Vercel musí mít Root Directory `web`.
 - **Ověření** — produkční build a lint prošly. Místní Git autentizace nefunguje, upload probíhá přes připojený GitHub.
-- **Předání** — stav publikace bude doplněn po dokončení.
+- **Předání** — aplikace zveřejněná na `https://github.com/ondrejfolprecht/beko-demo`, commit `8c33ecba1736e769244127b915da8658958cc322`. Ověřená shoda SHA všech 127 souborů. Vercel čeká na přihlášení uživatele. Remote `origin` přidaný; lokální historie zatím zůstává oddělená od historie vzdáleného repozitáře.
 
 ### 2026-11-11 — Vrácení původních obrázků projektů (Codex)
 
